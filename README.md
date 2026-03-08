@@ -60,4 +60,23 @@ sim <- generate_multprofile_gmm(
   ),
   seed = 123
 )
+
+summary(sim)
+#>                              Length Class  Mode   
+#> X                            4800   -none- numeric
+#> X_signal                     4800   -none- numeric
+#> X_profiles                      2   -none- list   
+#> s                               2   -none- list   
+#> z                               2   -none- list   
+#> templates                       2   -none- list   
+#> feature_baselines               2   -none- list   
+#> delta                           2   -none- list   
+#> mu                              2   -none- list   
+#> Sigma                           2   -none- list   
+#> achieved_ari_features           4   -none- numeric
+#> achieved_mixing                 2   -none- list   
+#> achieved_feature_group_props    2   -none- list   
+#> achieved_mahalanobis            2   -none- list   
+#> noise_feature_indices           0   -none- numeric
+#> settings                       22   -none- list
 ```
