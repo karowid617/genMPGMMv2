@@ -48,7 +48,7 @@ sim <- genMPGMM(
     c(0.6, 0.4)
   ),
   dist_mahalanobis = c(3, 4),
-  target_ari_features = c(1, 0.2),
+  target_ari = c(1, 0.2),
   M = 80,
   N = 60,
   covariance_spec = list(
@@ -67,7 +67,7 @@ summary.MPObject(sim)
 #> Profiles: 2 
 #> Feature groups per profile: 2, 2 
 #> Observation components per profile: 2, 2 
-#> Noise features: 0 
+#> Noise features: 8 
 #> 
 #> Achieved ARI matrix for feature partitions:
 #>       [,1]  [,2]

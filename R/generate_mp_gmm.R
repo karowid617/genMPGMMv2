@@ -8,7 +8,7 @@
 #' @param feature_group_proportions List of feature-group proportions.
 #' @param mixing_proportions List of component proportions.
 #' @param dist_mahalanobis Target pairwise Mahalanobis separation.
-#' @param target_ari_features ARI control for feature partitions.
+#' @param target_ari ARI control for feature partitions.
 #' @param M Number of features.
 #' @param N Number of observations.
 #' @param covariance_spec A list specifying the covariance structure within each
@@ -28,12 +28,23 @@
 #' @param ari_tol Tolerance for ARI optimization. By default \code{ari_tol = 0.01}.
 #' @param ari_max_iter Maximum number of ARI optimization iterations. By dafault \code{ari_max_iter = 10000}.
 #' @param ari_swap_frac Fraction of labels swapped in ARI perturbation. By default \code{ari_swap_frac = 0.1}
-#' @param profile_weights Profile weights.
-#' @param template_sd Standard deviation of group-level loadings.
-#' @param feature_sd_within_group Feature-level deviation within a group.
-#' @param baseline_sd Standard deviation of feature baselines.
+#' @param profile_weights Profile weights (optional). Vector of length P,
+#'        controlling how strongly each profile contributes to the final data matrix.
+#'        If \code{NULL}, all profiles are weighted equally.
 #'
-#' @return An object of class \code{"MPObject"}.
+#' @details
+#' The argument \code{covariance_spec} determines how within-component
+#' variability is represented in each profile.
+#'
+#' With \code{type = "diagonal"}, features are assumed to be uncorrelated, so
+#' the covariance matrix contains non-zero values only on the diagonal. This is
+#' a convenient choice when different features should have different variances,
+#' but no feature-to-feature dependence is required.
+#'
+#' With \code{type = "full_shared"}, a full covariance matrix is used within
+#' each profile, allowing arbitrary covariance between features. The covariance
+#' matrix is shared across all mixture components within a profile, while
+#' component separation is controlled through the component means.
 #'
 #' @examples
 #' sim <- genMPGMM(
@@ -43,11 +54,13 @@
 #' feature_group_proportions = list(c(0.5, 0.5),c(0.7, 0.3)),
 #' mixing_proportions = list(c(0.2, 0.8),c(0.6, 0.4)),
 #' dist_mahalanobis = c(3, 4),
-#' target_ari_features = c(1, 0.2),
+#' target_ari = c(1, 0.2),
 #' M = 80,
 #' N = 60,
 #' covariance_spec = list(type = "diagonal",diag_values = list(rep(1, 80),rep(1.5, 80))),
 #' seed = 123)
+#'
+#' @return An object of class \code{"MPObject"}.
 #'
 #' @export
 
@@ -60,7 +73,7 @@ genMPGMM <- function(
   feature_group_proportions,      # list of length P; each sums to 1; lengths = L_p
   mixing_proportions,             # list of length P; each sums to 1; lengths = K_p
   dist_mahalanobis,               # scalar or length P
-  target_ari_features,            # ARI control for feature partitions s[[p]]
+  target_ari,            # ARI control for feature partitions s[[p]]
   M,                              # number of features (rows)
   N,                              # number of observations (cols)
   covariance_spec,                # list(type=...)
@@ -78,16 +91,14 @@ genMPGMM <- function(
   ari_tol = 0.01,
   ari_max_iter = 10000,
   ari_swap_frac = 0.1,
-  profile_weights = NULL,         # optional weights when summing profile signals
-
+  profile_weights = NULL         # optional weights when summing profile signals
+) {
   # ------------------------------
   # PROFILE MEAN STRUCTURE
-  template_sd = 1,
-  # feature_sd_within_group = 0.15,
-  # feature_sd_within_group = 0.01,
-  feature_sd_within_group = 0,
+  template_sd = 1
+  feature_sd_within_group = 0.05
   baseline_sd = 0.5
-) {
+
   validate_generator_inputs(
     P = P,
     L_vec = L_vec,
@@ -99,7 +110,7 @@ genMPGMM <- function(
     dist_mahalanobis = dist_mahalanobis,
     covariance_spec = covariance_spec,
     ari_mode = ari_mode,
-    target_ari_features = target_ari_features,
+    target_ari = target_ari,
     add_noise = add_noise,
     noise_sd = noise_sd,
     noise_feature_fraction = noise_feature_fraction
@@ -123,7 +134,7 @@ genMPGMM <- function(
     P = P,
     L_vec = L_vec,
     feature_group_proportions = feature_group_proportions,
-    target_ari_features = target_ari_features,
+    target_ari = target_ari,
     ari_mode = ari_mode,
     ari_tol = ari_tol,
     ari_max_iter = ari_max_iter,
@@ -253,7 +264,7 @@ genMPGMM <- function(
       feature_group_proportions = feature_group_proportions,
       mixing_proportions = mixing_proportions,
       dist_mahalanobis = dist_mahalanobis,
-      target_ari_features = target_ari_features,
+      target_ari = target_ari,
       M = M,
       N = N,
       covariance_spec = covariance_spec,

@@ -97,7 +97,7 @@ validate_generator_inputs <- function(
     dist_mahalanobis,
     covariance_spec,
     ari_mode,
-    target_ari_features,
+    target_ari,
     add_noise,
     noise_sd,
     noise_feature_fraction
@@ -141,14 +141,14 @@ validate_generator_inputs <- function(
   }
 
   if (ari_mode == "vs_reference") {
-    if (!(length(target_ari_features) %in% c(1, P - 1, P))) {
-      stop("For `ari_mode = 'vs_reference'`, `target_ari_features` must have length 1, P-1, or P.")
+    if (!(length(target_ari) %in% c(1, P - 1, P))) {
+      stop("For `ari_mode = 'vs_reference'`, `target_ari` must have length 1, P-1, or P.")
     }
   }
 
   if (ari_mode == "pairwise_matrix") {
-    if (!is.matrix(target_ari_features) || any(dim(target_ari_features) != c(P, P))) {
-      stop("For `ari_mode = 'pairwise_matrix'`, `target_ari_features` must be a P x P matrix.")
+    if (!is.matrix(target_ari) || any(dim(target_ari) != c(P, P))) {
+      stop("For `ari_mode = 'pairwise_matrix'`, `target_ari` must be a P x P matrix.")
     }
   }
 
@@ -215,7 +215,7 @@ make_target_ari_vs_reference <- function(target_ari, P) {
   } else if (length(target_ari) == P) {
     target_ari
   } else {
-    stop("Invalid `target_ari_features` length for `vs_reference` mode.")
+    stop("Invalid `target_ari` length for `vs_reference` mode.")
   }
 }
 
@@ -224,12 +224,12 @@ generate_feature_partitions_vs_reference <- function(
     P,
     L_vec,
     feature_group_proportions,
-    target_ari_features,
+    target_ari,
     ari_tol = 0.01,
     ari_max_iter = 10000,
     ari_swap_frac = 0.1
 ) {
-  target_full <- make_target_ari_vs_reference(target_ari_features, P)
+  target_full <- make_target_ari_vs_reference(target_ari, P)
   s_list <- vector("list", P)
 
   s_list[[1]] <- make_exact_labels(
@@ -332,7 +332,7 @@ generate_feature_partitions <- function(
     P,
     L_vec,
     feature_group_proportions,
-    target_ari_features,
+    target_ari,
     ari_mode = "vs_reference",
     ari_tol = 0.01,
     ari_max_iter = 10000,
@@ -344,7 +344,7 @@ generate_feature_partitions <- function(
       P = P,
       L_vec = L_vec,
       feature_group_proportions = feature_group_proportions,
-      target_ari_features = target_ari_features,
+      target_ari = target_ari,
       ari_tol = ari_tol,
       ari_max_iter = ari_max_iter,
       ari_swap_frac = ari_swap_frac
@@ -355,7 +355,7 @@ generate_feature_partitions <- function(
       P = P,
       L_vec = L_vec,
       feature_group_proportions = feature_group_proportions,
-      target_ari_matrix = target_ari_features,
+      target_ari_matrix = target_ari,
       ari_tol = ari_tol,
       ari_max_iter = ari_max_iter
     )
@@ -594,7 +594,7 @@ generate_profile_signal <- function(
       block <- MASS::mvrnorm(
         n = length(cols_k),
         mu = mu_p[k, ],
-        cov_mtx = cov_mtx_p
+        Sigma = cov_mtx_p
       )
       X_p[, cols_k] <- t(block)
     }

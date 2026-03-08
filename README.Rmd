@@ -55,7 +55,7 @@ sim <- genMPGMM(
     c(0.6, 0.4)
   ),
   dist_mahalanobis = c(3, 4),
-  target_ari_features = c(1, 0.2),
+  target_ari = c(1, 0.2),
   M = 80,
   N = 60,
   covariance_spec = list(

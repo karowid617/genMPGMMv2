@@ -11,7 +11,7 @@ genMPGMM(
   feature_group_proportions,
   mixing_proportions,
   dist_mahalanobis,
-  target_ari_features,
+  target_ari,
   M,
   N,
   covariance_spec,
@@ -23,10 +23,7 @@ genMPGMM(
   ari_tol = 0.01,
   ari_max_iter = 10000,
   ari_swap_frac = 0.1,
-  profile_weights = NULL,
-  template_sd = 1,
-  feature_sd_within_group = 0,
-  baseline_sd = 0.5
+  profile_weights = NULL
 )
 }
 \arguments{
@@ -42,7 +39,7 @@ genMPGMM(
 
 \item{dist_mahalanobis}{Target pairwise Mahalanobis separation.}
 
-\item{target_ari_features}{ARI control for feature partitions.}
+\item{target_ari}{ARI control for feature partitions.}
 
 \item{M}{Number of features.}
 
@@ -74,19 +71,29 @@ is generated using \code{scale}.}
 
 \item{ari_swap_frac}{Fraction of labels swapped in ARI perturbation. By default \code{ari_swap_frac = 0.1}}
 
-\item{profile_weights}{Profile weights.}
-
-\item{template_sd}{Standard deviation of group-level loadings.}
-
-\item{feature_sd_within_group}{Feature-level deviation within a group.}
-
-\item{baseline_sd}{Standard deviation of feature baselines.}
+\item{profile_weights}{Profile weights (optional). Vector of length P,
+controlling how strongly each profile contributes to the final data matrix.
+If \code{NULL}, all profiles are weighted equally.}
 }
 \value{
 An object of class \code{"MPObject"}.
 }
 \description{
 Generate a synthetic data matrix with multiple latent profiles.
+}
+\details{
+The argument \code{covariance_spec} determines how within-component
+variability is represented in each profile.
+
+With \code{type = "diagonal"}, features are assumed to be uncorrelated, so
+the covariance matrix contains non-zero values only on the diagonal. This is
+a convenient choice when different features should have different variances,
+but no feature-to-feature dependence is required.
+
+With \code{type = "full_shared"}, a full covariance matrix is used within
+each profile, allowing arbitrary covariance between features. The covariance
+matrix is shared across all mixture components within a profile, while
+component separation is controlled through the component means.
 }
 \examples{
 sim <- genMPGMM(
@@ -96,7 +103,7 @@ K_vec = c(2, 2),
 feature_group_proportions = list(c(0.5, 0.5),c(0.7, 0.3)),
 mixing_proportions = list(c(0.2, 0.8),c(0.6, 0.4)),
 dist_mahalanobis = c(3, 4),
-target_ari_features = c(1, 0.2),
+target_ari = c(1, 0.2),
 M = 80,
 N = 60,
 covariance_spec = list(type = "diagonal",diag_values = list(rep(1, 80),rep(1.5, 80))),
