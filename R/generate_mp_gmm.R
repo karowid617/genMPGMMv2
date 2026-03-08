@@ -11,16 +11,16 @@
 #' @param target_ari_features ARI control for feature partitions.
 #' @param M Number of features.
 #' @param N Number of observations.
-#' @param covariance_spec Covariance specification.
-#' @param add_noise Should additive Gaussian noise be added?
+#' @param covariance_spec Covariance specification ("diagonal" or "full_shared").
+#' @param add_noise Should additive Gaussian noise be added? By default add_noise = FALSE
 #' @param noise_sd Standard deviation of additive noise.
-#' @param seed Optional random seed.
+#' @param seed Random seed (optional).
 #' @param noise_feature_fraction Fraction of features replaced by pure noise.
-#' @param ari_mode ARI control mode.
+#' @param ari_mode ARI control mode. This should be "vs_reference" (similarity specified relative to the first profile) or "pairwise_matrix" (similarity specified by user for all profile pairs)
 #' @param ari_tol Tolerance for ARI optimization.
 #' @param ari_max_iter Maximum number of ARI optimization iterations.
 #' @param ari_swap_frac Fraction of labels swapped in ARI perturbation.
-#' @param profile_weights Optional profile weights.
+#' @param profile_weights Profile weights.
 #' @param template_sd Standard deviation of group-level loadings.
 #' @param feature_sd_within_group Feature-level deviation within a group.
 #' @param baseline_sd Standard deviation of feature baselines.

@@ -1,8 +1,3 @@
-# helpers
-# ============================================================
-# 1. Utilities
-# ============================================================
-
 normalize_probs <- function(x, name = "probabilities") {
   if (is.null(x)) stop(sprintf("`%s` cannot be NULL.", name))
   if (any(x < 0)) stop(sprintf("`%s` must be non-negative.", name))

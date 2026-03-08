@@ -10,8 +10,8 @@ print.mp_gmm_data <- function(x, ...) {
   cat("  Features:      ", nrow(x$X), "\n", sep = "")
   cat("  Observations:  ", ncol(x$X), "\n", sep = "")
   cat("  Profiles:      ", x$settings$P, "\n", sep = "")
-  cat("  L_vec:         ", paste(x$settings$L_vec, collapse = ", "), "\n", sep = "")
-  cat("  K_vec:         ", paste(x$settings$K_vec, collapse = ", "), "\n", sep = "")
+  cat("  Feature groups per profile:         ", paste(x$settings$L_vec, collapse = ", "), "\n", sep = "")
+  cat("  Observation components per profile:         ", paste(x$settings$K_vec, collapse = ", "), "\n", sep = "")
   cat("  Noise features:", length(x$noise_feature_indices), "\n", sep = " ")
   invisible(x)
 }

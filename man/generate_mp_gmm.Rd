@@ -48,17 +48,17 @@ generate_mp_gmm(
 
 \item{N}{Number of observations.}
 
-\item{covariance_spec}{Covariance specification.}
+\item{covariance_spec}{Covariance specification ("diagonal" or "full_shared").}
 
-\item{add_noise}{Should additive Gaussian noise be added?}
+\item{add_noise}{Should additive Gaussian noise be added? By default add_noise = FALSE}
 
 \item{noise_sd}{Standard deviation of additive noise.}
 
-\item{seed}{Optional random seed.}
+\item{seed}{Random seed (optional).}
 
 \item{noise_feature_fraction}{Fraction of features replaced by pure noise.}
 
-\item{ari_mode}{ARI control mode.}
+\item{ari_mode}{ARI control mode. This should be "vs_reference" (similarity specified relative to the first profile) or "pairwise_matrix" (similarity specified by user for all profile pairs)}
 
 \item{ari_tol}{Tolerance for ARI optimization.}
 
@@ -66,7 +66,7 @@ generate_mp_gmm(
 
 \item{ari_swap_frac}{Fraction of labels swapped in ARI perturbation.}
 
-\item{profile_weights}{Optional profile weights.}
+\item{profile_weights}{Profile weights.}
 
 \item{template_sd}{Standard deviation of group-level loadings.}
 

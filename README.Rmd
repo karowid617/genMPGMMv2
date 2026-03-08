@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 genMPGMM is an R package for generating synthetic datasets from multi-profile Gaussian mixture models.
 
-The generator creates an M × N data matrix where rows correspond to features and columns correspond to observations.
+The generator creates an M by N data matrix where rows correspond to features and columns correspond to observations.
 
 Each latent profile defines (1) a partition of features into feature groups, (2) a partition of observations into mixture components.
 

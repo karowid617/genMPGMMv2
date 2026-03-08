@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(mpGMM)
+library(genMPGMM)
 
-test_check("mpGMM")
+test_check("genMPGMM")

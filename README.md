@@ -9,7 +9,7 @@
 genMPGMM is an R package for generating synthetic datasets from
 multi-profile Gaussian mixture models.
 
-The generator creates an M × N data matrix where rows correspond to
+The generator creates an M by N data matrix where rows correspond to
 features and columns correspond to observations.
 
 Each latent profile defines (1) a partition of features into feature
@@ -66,8 +66,8 @@ print.mp_gmm_data(sim)
 #>   Features:      80
 #>   Observations:  60
 #>   Profiles:      2
-#>   L_vec:         2, 2
-#>   K_vec:         2, 2
+#>   Feature groups per profile:         2, 2
+#>   Observation components per profile:         2, 2
 #>   Noise features: 0
 summary.mp_gmm_data(sim)
 #> === Multi-profile GMM summary ===
