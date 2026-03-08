@@ -1,12 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# mpGMM
+# genMPGMM
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-mpGMM is an R package for generating synthetic datasets from
+genMPGMM is an R package for generating synthetic datasets from
 multi-profile Gaussian mixture models.
 
 The generator creates an M × N data matrix where rows correspond to
@@ -25,7 +25,7 @@ You can install the development version of mpGMM like so:
 
 ``` r
 install.packages("remotes")
-remotes::install_github("karowid617/mpGMM")
+remotes::install_github("karowid617/genMPGMM")
 ```
 
 ## Example
@@ -33,9 +33,9 @@ remotes::install_github("karowid617/mpGMM")
 This is a basic example which shows you how to generate a dataset:
 
 ``` r
-library(mpGMM)
+library(genMPGMM)
 
-sim <- generate_multprofile_gmm(
+sim <- generate_mp_gmm(
   P = 2,
   L_vec = c(2, 2),
   K_vec = c(3, 3),

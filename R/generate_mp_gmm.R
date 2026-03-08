@@ -29,7 +29,7 @@
 #'
 #' @export
 
-generate_multprofile_gmm <- function(
+generate_mp_gmm <- function(
   # ------------------------------
   # REQUIRED
   P,                              # number of profiles
