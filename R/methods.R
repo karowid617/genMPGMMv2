@@ -1,23 +1,3 @@
-#' Print a multi-profile GMM object
-#'
-#' @param x An object of class \code{"MPObject"}.
-#' @param ... Further arguments passed to or from other methods.
-#'
-#' @return The input object, invisibly.
-#' @export
-print.MPObject <- function(x, ...) {
-  cat("Multi-profile GMM data\n")
-  cat("  Features:      ", nrow(x$X), "\n", sep = "")
-  cat("  Observations:  ", ncol(x$X), "\n", sep = "")
-  cat("  Profiles:      ", x$settings$P, "\n", sep = "")
-  cat("  Feature groups per profile:         ", paste(x$settings$L_vec, collapse = ", "), "\n", sep = "")
-  cat("  Observation components per profile:         ", paste(x$settings$K_vec, collapse = ", "), "\n", sep = "")
-  cat("  Noise features:", length(x$noise_feature_indices), "\n", sep = " ")
-  invisible(x)
-}
-
-
-
 #' Summarize a multi-profile GMM object
 #'
 #' @param object An object of class \code{"MPObject"}.

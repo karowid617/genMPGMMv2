@@ -68,6 +68,5 @@ sim <- genMPGMM(
   seed = 123
 )
 
-print(sim)
-summary(sim)
+summary.MPObject(sim)
 ```
