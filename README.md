@@ -38,14 +38,14 @@ library(genMPGMM)
 sim <- generate_mp_gmm(
   P = 2,
   L_vec = c(2, 2),
-  K_vec = c(3, 3),
+  K_vec = c(2, 2),
   feature_group_proportions = list(
     c(0.5, 0.5),
     c(0.7, 0.3)
   ),
   mixing_proportions = list(
-    c(0.2, 0.2, 0.6),
-    c(0.7, 0.1, 0.2)
+    c(0.2, 0.8),
+    c(0.6, 0.4)
   ),
   dist_mahalanobis = c(3, 4),
   target_ari_features = c(1, 0.2),
@@ -67,14 +67,14 @@ print.mp_gmm_data(sim)
 #>   Observations:  60
 #>   Profiles:      2
 #>   L_vec:         2, 2
-#>   K_vec:         3, 3
+#>   K_vec:         2, 2
 #>   Noise features: 0
 summary.mp_gmm_data(sim)
 #> === Multi-profile GMM summary ===
 #> X dimension: 80 features x 60 observations
 #> Profiles: 2 
 #> Feature groups per profile: 2, 2 
-#> Observation components per profile: 3, 3 
+#> Observation components per profile: 2, 2 
 #> Noise features: 0 
 #> 
 #> Achieved ARI matrix for feature partitions:
@@ -84,10 +84,10 @@ summary.mp_gmm_data(sim)
 #> 
 #> Achieved mixture proportions:
 #> [[1]]
-#> [1] 0.2 0.2 0.6
+#> [1] 0.2 0.8
 #> 
 #> [[2]]
-#> [1] 0.7 0.1 0.2
+#> [1] 0.6 0.4
 #> 
 #> 
 #> Achieved feature-group proportions:
@@ -101,14 +101,12 @@ summary.mp_gmm_data(sim)
 #> Pairwise Mahalanobis distance matrices:
 #> 
 #> Profile 1:
-#>       [,1]  [,2]  [,3]
-#> [1,] 0.000 3.000 1.496
-#> [2,] 3.000 0.000 4.188
-#> [3,] 1.496 4.188 0.000
+#>      [,1] [,2]
+#> [1,]    0    3
+#> [2,]    3    0
 #> 
 #> Profile 2:
-#>       [,1]  [,2]  [,3]
-#> [1,] 0.000 4.000 2.075
-#> [2,] 4.000 0.000 6.064
-#> [3,] 2.075 6.064 0.000
+#>      [,1] [,2]
+#> [1,]    0    4
+#> [2,]    4    0
 ```
