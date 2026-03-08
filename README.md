@@ -35,7 +35,7 @@ This is a basic example which shows you how to generate a dataset:
 ``` r
 library(genMPGMM)
 
-sim <- generate_mp_gmm(
+sim <- genMPGMM(
   P = 2,
   L_vec = c(2, 2),
   K_vec = c(2, 2),

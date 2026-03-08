@@ -27,9 +27,12 @@
 #'
 #' @return An object of class \code{"mp_gmm_data"}.
 #'
+#' @examples
+#' sim <- genMPGMM()
+#'
 #' @export
 
-generate_mp_gmm <- function(
+genMPGMM <- function(
   # ------------------------------
   # REQUIRED
   P,                              # number of profiles
