@@ -68,6 +68,6 @@ sim <- genMPGMM(
   seed = 123
 )
 
-print.mp_gmm_data(sim)
-summary.mp_gmm_data(sim)
+print(sim)
+summary(sim)
 ```

@@ -1,11 +1,11 @@
 #' Print a multi-profile GMM object
 #'
-#' @param x An object of class \code{"multprofile_gmm_data"}.
+#' @param x An object of class \code{"MPObject"}.
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @return The input object, invisibly.
 #' @export
-print.mp_gmm_data <- function(x, ...) {
+print.MPObject <- function(x, ...) {
   cat("Multi-profile GMM data\n")
   cat("  Features:      ", nrow(x$X), "\n", sep = "")
   cat("  Observations:  ", ncol(x$X), "\n", sep = "")
@@ -20,12 +20,12 @@ print.mp_gmm_data <- function(x, ...) {
 
 #' Summarize a multi-profile GMM object
 #'
-#' @param object An object of class \code{"multprofile_gmm_data"}.
+#' @param object An object of class \code{"MPObject"}.
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @return The input object, invisibly.
 #' @export
-summary.mp_gmm_data <- function(object, ...) {
+summary.MPObject <- function(object, ...) {
   cat("=== Multi-profile GMM summary ===\n")
   cat("X dimension:", nrow(object$X), "features x", ncol(object$X), "observations\n")
   cat("Profiles:", object$settings$P, "\n")

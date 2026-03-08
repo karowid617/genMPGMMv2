@@ -75,7 +75,7 @@ genMPGMM(
 \item{baseline_sd}{Standard deviation of feature baselines.}
 }
 \value{
-An object of class \code{"mp_gmm_data"}.
+An object of class \code{"MPObject"}.
 }
 \description{
 Generate a synthetic data matrix with multiple latent profiles.

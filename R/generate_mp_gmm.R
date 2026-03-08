@@ -25,7 +25,7 @@
 #' @param feature_sd_within_group Feature-level deviation within a group.
 #' @param baseline_sd Standard deviation of feature baselines.
 #'
-#' @return An object of class \code{"mp_gmm_data"}.
+#' @return An object of class \code{"MPObject"}.
 #'
 #' @examples
 #' sim <- genMPGMM(
@@ -264,6 +264,6 @@ genMPGMM <- function(
     )
   )
 
-  class(out) <- "mp_gmm_data"
+  class(out) <- "MPObject"
   out
 }
