@@ -18,7 +18,7 @@ genMPGMM(
   add_noise = FALSE,
   noise_sd = 0.1,
   seed = NULL,
-  noise_feature_fraction = 0,
+  noise_feature_fraction = 0.1,
   ari_mode = "vs_reference",
   ari_tol = 0.01,
   ari_max_iter = 10000,
@@ -48,23 +48,31 @@ genMPGMM(
 
 \item{N}{Number of observations.}
 
-\item{covariance_spec}{Covariance specification ("diagonal" or "full_shared").}
+\item{covariance_spec}{A list specifying the covariance structure within each
+profile. Supported types are \code{"diagonal"} and \code{"full_shared"}.
+For \code{"diagonal"}, use \code{diag_values} to provide either a single
+variance value, a vector of feature-specific variances of length M, or
+a list of such vectors for profile-specific covariance matrices. For
+\code{"full_shared"}, use \code{cov_mtx} to provide a full M by M
+covariance matrix (or a list of such matrices, one per profile). If
+\code{cov_mtx} is not supplied, a random positive-definite covariance matrix
+is generated using \code{scale}.}
 
-\item{add_noise}{Should additive Gaussian noise be added? By default add_noise = FALSE}
+\item{add_noise}{Should additive Gaussian noise be added? By default \code{add_noise = FALSE}.}
 
-\item{noise_sd}{Standard deviation of additive noise.}
+\item{noise_sd}{Standard deviation of additive noise. By default \code{noise_sd = 0.1}.}
 
 \item{seed}{Random seed (optional).}
 
-\item{noise_feature_fraction}{Fraction of features replaced by pure noise.}
+\item{noise_feature_fraction}{Fraction of features replaced by noise features. By default \code{noise_feature_fraction = 0.1}.}
 
-\item{ari_mode}{ARI control mode. This should be "vs_reference" (similarity specified relative to the first profile) or "pairwise_matrix" (similarity specified by user for all profile pairs)}
+\item{ari_mode}{ARI control mode. This should be \code{"vs_reference"} (similarity specified relative to the first profile) or \code{"pairwise_matrix"} (similarity specified by user for all profile pairs).}
 
-\item{ari_tol}{Tolerance for ARI optimization.}
+\item{ari_tol}{Tolerance for ARI optimization. By default \code{ari_tol = 0.01}.}
 
-\item{ari_max_iter}{Maximum number of ARI optimization iterations.}
+\item{ari_max_iter}{Maximum number of ARI optimization iterations. By dafault \code{ari_max_iter = 10000}.}
 
-\item{ari_swap_frac}{Fraction of labels swapped in ARI perturbation.}
+\item{ari_swap_frac}{Fraction of labels swapped in ARI perturbation. By default \code{ari_swap_frac = 0.1}}
 
 \item{profile_weights}{Profile weights.}
 

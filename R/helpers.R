@@ -397,12 +397,6 @@ build_profile_covariance <- function(
 ) {
   type <- covariance_spec$type
 
-  if (type == "spherical") {
-    var_p <- get_profile_element(covariance_spec$var, p, P, "covariance_spec$var")
-    if (is.null(var_p)) var_p <- 1
-    return(diag(as.numeric(var_p), M))
-  }
-
   if (type == "diagonal") {
     diag_p <- get_profile_element(covariance_spec$diag_values, p, P, "covariance_spec$diag_values")
     if (is.null(diag_p)) {
@@ -416,38 +410,38 @@ build_profile_covariance <- function(
   }
 
   if (type == "full_shared") {
-    Sigma_p <- get_profile_element(covariance_spec$Sigma, p, P, "covariance_spec$Sigma")
-    if (is.null(Sigma_p)) {
+    cov_mtx_p <- get_profile_element(covariance_spec$cov_mtx, p, P, "covariance_spec$cov_mtx")
+    if (is.null(cov_mtx_p)) {
       scale_p <- get_profile_element(covariance_spec$scale, p, P, "covariance_spec$scale")
       if (is.null(scale_p)) scale_p <- 1
-      Sigma_p <- random_spd(M, scale = scale_p)
+      cov_mtx_p <- random_spd(M, scale = scale_p)
     } else {
-      if (!is.matrix(Sigma_p) || any(dim(Sigma_p) != c(M, M))) {
-        stop(sprintf("Supplied Sigma for profile %d must be %d x %d.", p, M, M))
+      if (!is.matrix(cov_mtx_p) || any(dim(cov_mtx_p) != c(M, M))) {
+        stop(sprintf("Supplied cov_mtx for profile %d must be %d x %d.", p, M, M))
       }
     }
-    return(Sigma_p)
+    return(cov_mtx_p)
   }
 
-  stop("Unsupported covariance type. Use 'spherical', 'diagonal', or 'full_shared'.")
+  stop("Unsupported covariance type. Use 'diagonal', or 'full_shared'.")
 }
 
 # ============================================================
 # 6. Profile mean structure + Mahalanobis control
 # ============================================================
 
-mahalanobis_distance_matrix <- function(mu_mat, Sigma) {
+mahalanobis_distance_matrix <- function(mu_mat, cov_mtx) {
   # mu_mat: K x M
   K <- nrow(mu_mat)
   if (K == 1) return(matrix(0, 1, 1))
 
-  Sigma_inv <- solve(Sigma)
+  cov_mtx_inv <- solve(cov_mtx)
   D <- matrix(0, K, K)
 
   for (k1 in seq_len(K)) {
     for (k2 in seq_len(K)) {
       d <- mu_mat[k1, ] - mu_mat[k2, ]
-      D[k1, k2] <- sqrt(drop(t(d) %*% Sigma_inv %*% d))
+      D[k1, k2] <- sqrt(drop(t(d) %*% cov_mtx_inv %*% d))
     }
   }
   D
@@ -478,7 +472,7 @@ generate_profile_mean_structure <- function(
     s_p,
     L_p,
     K_p,
-    Sigma_p,
+    cov_mtx_p,
     target_mahalanobis,
     template_sd = 1,
     feature_sd_within_group = 0.05,
@@ -540,7 +534,7 @@ generate_profile_mean_structure <- function(
   #    (można też mediany)
   # ---------------------------------------
   if (K_p > 1) {
-    D0 <- mahalanobis_distance_matrix(delta, Sigma_p)
+    D0 <- mahalanobis_distance_matrix(delta, cov_mtx_p)
     dvals <- D0[upper.tri(D0)]
     dvals <- dvals[is.finite(dvals) & dvals > 0]
 
@@ -561,7 +555,7 @@ generate_profile_mean_structure <- function(
     mu[k, ] <- mu[k, ] + feature_baselines
   }
 
-  D <- mahalanobis_distance_matrix(mu, Sigma_p)
+  D <- mahalanobis_distance_matrix(mu, cov_mtx_p)
 
   list(
     templates = group_loadings,         # L_p x latent_dim
@@ -581,7 +575,7 @@ generate_profile_signal <- function(
     N,
     z_p,
     mu_p,
-    Sigma_p
+    cov_mtx_p
 ) {
   K_p <- nrow(mu_p)
   X_p <- matrix(0, nrow = M, ncol = N)
@@ -594,13 +588,13 @@ generate_profile_signal <- function(
       X_p[1, cols_k] <- rnorm(
         n = length(cols_k),
         mean = mu_p[k, 1],
-        sd = sqrt(Sigma_p[1, 1])
+        sd = sqrt(cov_mtx_p[1, 1])
       )
     } else {
       block <- MASS::mvrnorm(
         n = length(cols_k),
         mu = mu_p[k, ],
-        Sigma = Sigma_p
+        cov_mtx = cov_mtx_p
       )
       X_p[, cols_k] <- t(block)
     }

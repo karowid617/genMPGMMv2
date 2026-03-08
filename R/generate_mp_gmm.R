@@ -11,15 +11,23 @@
 #' @param target_ari_features ARI control for feature partitions.
 #' @param M Number of features.
 #' @param N Number of observations.
-#' @param covariance_spec Covariance specification ("diagonal" or "full_shared").
-#' @param add_noise Should additive Gaussian noise be added? By default add_noise = FALSE
-#' @param noise_sd Standard deviation of additive noise.
+#' @param covariance_spec A list specifying the covariance structure within each
+#'   profile. Supported types are \code{"diagonal"} and \code{"full_shared"}.
+#'   For \code{"diagonal"}, use \code{diag_values} to provide either a single
+#'   variance value, a vector of feature-specific variances of length M, or
+#'   a list of such vectors for profile-specific covariance matrices. For
+#'   \code{"full_shared"}, use \code{cov_mtx} to provide a full M by M
+#'   covariance matrix (or a list of such matrices, one per profile). If
+#'   \code{cov_mtx} is not supplied, a random positive-definite covariance matrix
+#'   is generated using \code{scale}.
+#' @param add_noise Should additive Gaussian noise be added? By default \code{add_noise = FALSE}.
+#' @param noise_sd Standard deviation of additive noise. By default \code{noise_sd = 0.1}.
 #' @param seed Random seed (optional).
-#' @param noise_feature_fraction Fraction of features replaced by pure noise.
-#' @param ari_mode ARI control mode. This should be "vs_reference" (similarity specified relative to the first profile) or "pairwise_matrix" (similarity specified by user for all profile pairs)
-#' @param ari_tol Tolerance for ARI optimization.
-#' @param ari_max_iter Maximum number of ARI optimization iterations.
-#' @param ari_swap_frac Fraction of labels swapped in ARI perturbation.
+#' @param noise_feature_fraction Fraction of features replaced by noise features. By default \code{noise_feature_fraction = 0.1}.
+#' @param ari_mode ARI control mode. This should be \code{"vs_reference"} (similarity specified relative to the first profile) or \code{"pairwise_matrix"} (similarity specified by user for all profile pairs).
+#' @param ari_tol Tolerance for ARI optimization. By default \code{ari_tol = 0.01}.
+#' @param ari_max_iter Maximum number of ARI optimization iterations. By dafault \code{ari_max_iter = 10000}.
+#' @param ari_swap_frac Fraction of labels swapped in ARI perturbation. By default \code{ari_swap_frac = 0.1}
 #' @param profile_weights Profile weights.
 #' @param template_sd Standard deviation of group-level loadings.
 #' @param feature_sd_within_group Feature-level deviation within a group.
@@ -62,7 +70,7 @@ genMPGMM <- function(
   # STRONGLY RECOMMENDED
   noise_sd = 0.1,                 # additive iid noise sd
   seed = NULL,
-  noise_feature_fraction = 0,     # overwrite a fraction of rows with pure noise
+  noise_feature_fraction = 0.1,     # overwrite a fraction of rows with pure noise
   ari_mode = "vs_reference",      # 'vs_reference' or 'pairwise_matrix'
 
   # ------------------------------
@@ -131,7 +139,7 @@ genMPGMM <- function(
   )
 
   # 3) Profile-specific covariance + centroid structure
-  Sigma_list <- vector("list", P)
+  cov_mtx_list <- vector("list", P)
   templates_list <- vector("list", P)
   baselines_list <- vector("list", P)
   delta_list <- vector("list", P)
@@ -139,7 +147,7 @@ genMPGMM <- function(
   D_list <- vector("list", P)
 
   for (p in seq_len(P)) {
-    Sigma_p <- build_profile_covariance(
+    cov_mtx_p <- build_profile_covariance(
       M = M,
       p = p,
       P = P,
@@ -150,14 +158,14 @@ genMPGMM <- function(
       s_p = s_list[[p]],
       L_p = L_vec[p],
       K_p = K_vec[p],
-      Sigma_p = Sigma_p,
+      cov_mtx_p = cov_mtx_p,
       target_mahalanobis = dist_vec[p],
       template_sd = template_sd,
       feature_sd_within_group = feature_sd_within_group,
       baseline_sd = baseline_sd
     )
 
-    Sigma_list[[p]] <- Sigma_p
+    cov_mtx_list[[p]] <- cov_mtx_p
     templates_list[[p]] <- means_obj$templates
     baselines_list[[p]] <- means_obj$feature_baselines
     delta_list[[p]] <- means_obj$delta
@@ -175,7 +183,7 @@ genMPGMM <- function(
       N = N,
       z_p = z_list[[p]],
       mu_p = mu_list[[p]],
-      Sigma_p = Sigma_list[[p]]
+      cov_mtx_p = cov_mtx_list[[p]]
     )
 
     X_profiles[[p]] <- X_p
@@ -229,7 +237,7 @@ genMPGMM <- function(
     feature_baselines = baselines_list,# length M per profile
     delta = delta_list,                # K_p x M component-separating part
     mu = mu_list,                      # K_p x M final component centroids
-    Sigma = Sigma_list,                # M x M covariance per profile
+    cov_mtx = cov_mtx_list,                # M x M covariance per profile
 
     achieved_ari_features = achieved_ari_features,
     achieved_mixing = achieved_mixing,
