@@ -68,5 +68,6 @@ sim <- generate_multprofile_gmm(
   seed = 123
 )
 
-summary(sim)
+print.mp_gmm_data(sim)
+summary.mp_gmm_data(sim)
 ```

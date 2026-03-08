@@ -5,7 +5,7 @@
 #'
 #' @return The input object, invisibly.
 #' @export
-print.multprofile_gmm_data <- function(x, ...) {
+print.mp_gmm_data <- function(x, ...) {
   cat("Multi-profile GMM data\n")
   cat("  Features:      ", nrow(x$X), "\n", sep = "")
   cat("  Observations:  ", ncol(x$X), "\n", sep = "")
@@ -25,7 +25,7 @@ print.multprofile_gmm_data <- function(x, ...) {
 #'
 #' @return The input object, invisibly.
 #' @export
-summary.multprofile_gmm_data <- function(object, ...) {
+summary.mp_gmm_data <- function(object, ...) {
   cat("=== Multi-profile GMM summary ===\n")
   cat("X dimension:", nrow(object$X), "features x", ncol(object$X), "observations\n")
   cat("Profiles:", object$settings$P, "\n")

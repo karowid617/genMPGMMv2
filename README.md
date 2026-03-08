@@ -61,22 +61,54 @@ sim <- generate_multprofile_gmm(
   seed = 123
 )
 
-summary(sim)
-#>                              Length Class  Mode   
-#> X                            4800   -none- numeric
-#> X_signal                     4800   -none- numeric
-#> X_profiles                      2   -none- list   
-#> s                               2   -none- list   
-#> z                               2   -none- list   
-#> templates                       2   -none- list   
-#> feature_baselines               2   -none- list   
-#> delta                           2   -none- list   
-#> mu                              2   -none- list   
-#> Sigma                           2   -none- list   
-#> achieved_ari_features           4   -none- numeric
-#> achieved_mixing                 2   -none- list   
-#> achieved_feature_group_props    2   -none- list   
-#> achieved_mahalanobis            2   -none- list   
-#> noise_feature_indices           0   -none- numeric
-#> settings                       22   -none- list
+print.mp_gmm_data(sim)
+#> Multi-profile GMM data
+#>   Features:      80
+#>   Observations:  60
+#>   Profiles:      2
+#>   L_vec:         2, 2
+#>   K_vec:         3, 3
+#>   Noise features: 0
+summary.mp_gmm_data(sim)
+#> === Multi-profile GMM summary ===
+#> X dimension: 80 features x 60 observations
+#> Profiles: 2 
+#> Feature groups per profile: 2, 2 
+#> Observation components per profile: 3, 3 
+#> Noise features: 0 
+#> 
+#> Achieved ARI matrix for feature partitions:
+#>       [,1]  [,2]
+#> [1,] 1.000 0.194
+#> [2,] 0.194 1.000
+#> 
+#> Achieved mixture proportions:
+#> [[1]]
+#> [1] 0.2 0.2 0.6
+#> 
+#> [[2]]
+#> [1] 0.7 0.1 0.2
+#> 
+#> 
+#> Achieved feature-group proportions:
+#> [[1]]
+#> [1] 0.5 0.5
+#> 
+#> [[2]]
+#> [1] 0.7 0.3
+#> 
+#> 
+#> Pairwise Mahalanobis distance matrices:
+#> 
+#> Profile 1:
+#>       [,1]  [,2]  [,3]
+#> [1,] 0.000 3.000 1.496
+#> [2,] 3.000 0.000 4.188
+#> [3,] 1.496 4.188 0.000
+#> 
+#> Profile 2:
+#>       [,1]  [,2]  [,3]
+#> [1,] 0.000 4.000 2.075
+#> [2,] 4.000 0.000 6.064
+#> [3,] 2.075 6.064 0.000
 ```
