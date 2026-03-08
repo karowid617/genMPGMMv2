@@ -28,7 +28,18 @@
 #' @return An object of class \code{"mp_gmm_data"}.
 #'
 #' @examples
-#' sim <- genMPGMM()
+#' sim <- genMPGMM(
+#' P = 2,
+#' L_vec = c(2, 2),
+#' K_vec = c(2, 2),
+#' feature_group_proportions = list(c(0.5, 0.5),c(0.7, 0.3)),
+#' mixing_proportions = list(c(0.2, 0.8),c(0.6, 0.4)),
+#' dist_mahalanobis = c(3, 4),
+#' target_ari_features = c(1, 0.2),
+#' M = 80,
+#' N = 60,
+#' covariance_spec = list(type = "diagonal",diag_values = list(rep(1, 80),rep(1.5, 80))),
+#' seed = 123)
 #'
 #' @export
 
