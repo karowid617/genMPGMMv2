@@ -9,8 +9,8 @@ summary.MPObject <- function(object, ...) {
   cat("=== Multi-profile GMM summary ===\n")
   cat("X dimension:", nrow(object$X), "features x", ncol(object$X), "observations\n")
   cat("Profiles:", object$settings$P, "\n")
-  cat("Feature groups per profile:", paste(object$settings$L_vec, collapse = ", "), "\n")
-  cat("Observation components per profile:", paste(object$settings$K_vec, collapse = ", "), "\n")
+  cat("Feature groups per profile:", paste(object$settings$n_feature_patterns, collapse = ", "), "\n")
+  cat("Observation components per profile:", paste(object$settings$n_components, collapse = ", "), "\n")
   cat("Noise features:", length(object$noise_feature_indices), "\n\n")
 
   cat("Achieved ARI matrix for feature partitions:\n")

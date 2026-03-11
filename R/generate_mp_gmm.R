@@ -2,9 +2,8 @@
 #'
 #' Generate a synthetic data matrix with multiple latent profiles.
 #'
-#' @param P Number of profiles.
-#' @param L_vec Number of feature groups in each profile.
-#' @param K_vec Number of observation components in each profile.
+#' @param n_feature_patterns Number of feature groups in each profile.
+#' @param n_components Number of observation components in each profile.
 #' @param feature_group_proportions List of feature-group proportions.
 #' @param mixing_proportions List of component proportions.
 #' @param dist_mahalanobis Target pairwise Mahalanobis separation.
@@ -47,10 +46,9 @@
 #' component separation is controlled through the component means.
 #'
 #' @examples
-#' sim <- genMPGMM(
-#' P = 2,
-#' L_vec = c(2, 2),
-#' K_vec = c(2, 2),
+#' data <- genMPGMM(
+#' n_feature_patterns = c(2, 2),
+#' n_components = c(2, 2),
 #' feature_group_proportions = list(c(0.5, 0.5),c(0.7, 0.3)),
 #' mixing_proportions = list(c(0.2, 0.8),c(0.6, 0.4)),
 #' dist_mahalanobis = c(3, 4),
@@ -67,9 +65,8 @@
 genMPGMM <- function(
   # ------------------------------
   # REQUIRED
-  P,                              # number of profiles
-  L_vec,                          # number of feature groups in each profile
-  K_vec,                          # number of observation components in each profile
+  n_feature_patterns,                          # number of feature groups in each profile
+  n_components,                          # number of observation components in each profile
   feature_group_proportions,      # list of length P; each sums to 1; lengths = L_p
   mixing_proportions,             # list of length P; each sums to 1; lengths = K_p
   dist_mahalanobis,               # scalar or length P
@@ -98,11 +95,12 @@ genMPGMM <- function(
   template_sd = 1
   feature_sd_within_group = 0.05
   baseline_sd = 0.5
+  P = length(n_feature_patterns)
 
   validate_generator_inputs(
     P = P,
-    L_vec = L_vec,
-    K_vec = K_vec,
+    n_feature_patterns = n_feature_patterns,
+    n_components = n_components,
     M = M,
     N = N,
     feature_group_proportions = feature_group_proportions,
@@ -132,7 +130,7 @@ genMPGMM <- function(
   s_list <- generate_feature_partitions(
     M = M,
     P = P,
-    L_vec = L_vec,
+    n_feature_patterns = n_feature_patterns,
     feature_group_proportions = feature_group_proportions,
     target_ari = target_ari,
     ari_mode = ari_mode,
@@ -145,7 +143,7 @@ genMPGMM <- function(
   z_list <- generate_observation_partitions(
     N = N,
     P = P,
-    K_vec = K_vec,
+    n_components = n_components,
     mixing_proportions = mixing_proportions
   )
 
@@ -167,8 +165,8 @@ genMPGMM <- function(
 
     means_obj <- generate_profile_mean_structure(
       s_p = s_list[[p]],
-      L_p = L_vec[p],
-      K_p = K_vec[p],
+      L_p = n_feature_patterns[p],
+      K_p = n_components[p],
       cov_mtx_p = cov_mtx_p,
       target_mahalanobis = dist_vec[p],
       template_sd = template_sd,
@@ -259,8 +257,8 @@ genMPGMM <- function(
 
     settings = list(
       P = P,
-      L_vec = L_vec,
-      K_vec = K_vec,
+      n_feature_patterns = n_feature_patterns,
+      n_components = n_components,
       feature_group_proportions = feature_group_proportions,
       mixing_proportions = mixing_proportions,
       dist_mahalanobis = dist_mahalanobis,

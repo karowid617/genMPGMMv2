@@ -5,9 +5,8 @@
 \title{Generate multi-profile Gaussian mixture data}
 \usage{
 genMPGMM(
-  P,
-  L_vec,
-  K_vec,
+  n_feature_patterns,
+  n_components,
   feature_group_proportions,
   mixing_proportions,
   dist_mahalanobis,
@@ -27,11 +26,9 @@ genMPGMM(
 )
 }
 \arguments{
-\item{P}{Number of profiles.}
+\item{n_feature_patterns}{Number of feature groups in each profile.}
 
-\item{L_vec}{Number of feature groups in each profile.}
-
-\item{K_vec}{Number of observation components in each profile.}
+\item{n_components}{Number of observation components in each profile.}
 
 \item{feature_group_proportions}{List of feature-group proportions.}
 
@@ -96,10 +93,9 @@ matrix is shared across all mixture components within a profile, while
 component separation is controlled through the component means.
 }
 \examples{
-sim <- genMPGMM(
-P = 2,
-L_vec = c(2, 2),
-K_vec = c(2, 2),
+data <- genMPGMM(
+n_feature_patterns = c(2, 2),
+n_components = c(2, 2),
 feature_group_proportions = list(c(0.5, 0.5),c(0.7, 0.3)),
 mixing_proportions = list(c(0.2, 0.8),c(0.6, 0.4)),
 dist_mahalanobis = c(3, 4),

@@ -88,8 +88,8 @@ random_spd <- function(d, scale = 1, jitter = 1e-6) {
 
 validate_generator_inputs <- function(
     P,
-    L_vec,
-    K_vec,
+    n_feature_patterns,
+    n_components,
     M,
     N,
     feature_group_proportions,
@@ -103,10 +103,10 @@ validate_generator_inputs <- function(
     noise_feature_fraction
 ) {
   if (P < 2) stop("`P` must be >= 2.")
-  if (length(L_vec) != P) stop("`L_vec` must have length P.")
-  if (length(K_vec) != P) stop("`K_vec` must have length P.")
-  if (any(L_vec < 1)) stop("All values in `L_vec` must be >= 1.")
-  if (any(K_vec < 1)) stop("All values in `K_vec` must be >= 1.")
+  if (length(n_feature_patterns) != P) stop("`n_feature_patterns` must have length P.")
+  if (length(n_components) != P) stop("`n_components` must have length P.")
+  if (any(n_feature_patterns < 1)) stop("All values in `n_feature_patterns` must be >= 1.")
+  if (any(n_components < 1)) stop("All values in `n_components` must be >= 1.")
   if (M < 2) stop("`M` must be >= 2.")
   if (N < 2) stop("`N` must be >= 2.")
 
@@ -118,13 +118,13 @@ validate_generator_inputs <- function(
   }
 
   for (p in seq_len(P)) {
-    if (length(feature_group_proportions[[p]]) != L_vec[p]) {
-      stop(sprintf("`feature_group_proportions[[%d]]` must have length L_vec[%d] = %d.",
-                   p, p, L_vec[p]))
+    if (length(feature_group_proportions[[p]]) != n_feature_patterns[p]) {
+      stop(sprintf("`feature_group_proportions[[%d]]` must have length n_feature_patterns[%d] = %d.",
+                   p, p, n_feature_patterns[p]))
     }
-    if (length(mixing_proportions[[p]]) != K_vec[p]) {
-      stop(sprintf("`mixing_proportions[[%d]]` must have length K_vec[%d] = %d.",
-                   p, p, K_vec[p]))
+    if (length(mixing_proportions[[p]]) != n_components[p]) {
+      stop(sprintf("`mixing_proportions[[%d]]` must have length n_components[%d] = %d.",
+                   p, p, n_components[p]))
     }
   }
 
@@ -222,7 +222,7 @@ make_target_ari_vs_reference <- function(target_ari, P) {
 generate_feature_partitions_vs_reference <- function(
     M,
     P,
-    L_vec,
+    n_feature_patterns,
     feature_group_proportions,
     target_ari,
     ari_tol = 0.01,
@@ -235,14 +235,14 @@ generate_feature_partitions_vs_reference <- function(
   s_list[[1]] <- make_exact_labels(
     n = M,
     probs = feature_group_proportions[[1]],
-    labels = seq_len(L_vec[1])
+    labels = seq_len(n_feature_patterns[1])
   )
 
   for (p in 2:P) {
     init_labels <- make_exact_labels(
       n = M,
       probs = feature_group_proportions[[p]],
-      labels = seq_len(L_vec[p])
+      labels = seq_len(n_feature_patterns[p])
     )
 
     s_list[[p]] <- perturb_labels_to_target_ari(
@@ -272,7 +272,7 @@ pairwise_ari_objective_for_profile <- function(labels_list, p, target_ari_matrix
 generate_feature_partitions_pairwise <- function(
     M,
     P,
-    L_vec,
+    n_feature_patterns,
     feature_group_proportions,
     target_ari_matrix,
     ari_tol = 0.01,
@@ -284,7 +284,7 @@ generate_feature_partitions_pairwise <- function(
     s_list[[p]] <- make_exact_labels(
       n = M,
       probs = feature_group_proportions[[p]],
-      labels = seq_len(L_vec[p])
+      labels = seq_len(n_feature_patterns[p])
     )
   }
 
@@ -330,7 +330,7 @@ generate_feature_partitions_pairwise <- function(
 generate_feature_partitions <- function(
     M,
     P,
-    L_vec,
+    n_feature_patterns,
     feature_group_proportions,
     target_ari,
     ari_mode = "vs_reference",
@@ -342,7 +342,7 @@ generate_feature_partitions <- function(
     generate_feature_partitions_vs_reference(
       M = M,
       P = P,
-      L_vec = L_vec,
+      n_feature_patterns = n_feature_patterns,
       feature_group_proportions = feature_group_proportions,
       target_ari = target_ari,
       ari_tol = ari_tol,
@@ -353,7 +353,7 @@ generate_feature_partitions <- function(
     generate_feature_partitions_pairwise(
       M = M,
       P = P,
-      L_vec = L_vec,
+      n_feature_patterns = n_feature_patterns,
       feature_group_proportions = feature_group_proportions,
       target_ari_matrix = target_ari,
       ari_tol = ari_tol,
@@ -369,7 +369,7 @@ generate_feature_partitions <- function(
 generate_observation_partitions <- function(
     N,
     P,
-    K_vec,
+    n_components,
     mixing_proportions
 ) {
   z_list <- vector("list", P)
@@ -378,7 +378,7 @@ generate_observation_partitions <- function(
     z_list[[p]] <- make_exact_labels(
       n = N,
       probs = mixing_proportions[[p]],
-      labels = seq_len(K_vec[p])
+      labels = seq_len(n_components[p])
     )
   }
 

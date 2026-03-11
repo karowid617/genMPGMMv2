@@ -35,10 +35,9 @@ This is a basic example which shows you how to generate a dataset:
 ``` r
 library(genMPGMM)
 
-sim <- genMPGMM(
-  P = 2,
-  L_vec = c(2, 2),
-  K_vec = c(2, 2),
+data <- genMPGMM(
+  n_feature_patterns = c(2, 2),
+  n_components = c(2, 2),
   feature_group_proportions = list(
     c(0.5, 0.5),
     c(0.7, 0.3)
@@ -61,7 +60,7 @@ sim <- genMPGMM(
   seed = 123
 )
 
-summary.MPObject(sim)
+summary.MPObject(data)
 #> === Multi-profile GMM summary ===
 #> X dimension: 80 features x 60 observations
 #> Profiles: 2 
