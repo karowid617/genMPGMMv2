@@ -17,7 +17,6 @@ Rplots.pdf
 _pre_cleanup_snapshot/
 _archive_cleanup/
 
-# Documentation auto-built from vignettes
-inst/doc/
+# Documentation auto-built from vignettes (keep /doc local only)
 /doc/
 /Meta/
