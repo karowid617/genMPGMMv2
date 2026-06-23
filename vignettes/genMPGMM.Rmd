@@ -45,7 +45,7 @@ complexity that simple single-profile GMMs cannot provide.
 
 ``` r
 # Install from GitHub (once the repository is public)
-# remotes::install_github("karowid617/genMPGMM")
+# remotes::install_github("karowid617/genMPGMMv2")
 
 # During development, load directly from source
 pkgload::load_all(".")

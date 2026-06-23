@@ -32,6 +32,6 @@ Config/testthat/edition: 3
 Imports: 
     MASS,
     mclust
-URL: https://github.com/karowid617/genMPGMM
-BugReports: https://github.com/karowid617/genMPGMM/issues
+URL: https://github.com/karowid617/genMPGMMv2
+BugReports: https://github.com/karowid617/genMPGMMv2/issues
 Config/roxygen2/version: 8.0.0
