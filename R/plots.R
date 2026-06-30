@@ -257,7 +257,7 @@
     ggplot2::ggplot(pca_df,
                     ggplot2::aes(.data$PC1, .data$PC2, colour = .data$Comp)) +
       ggplot2::geom_point(size = 1.8, alpha = 0.7) +
-      ggplot2::stat_ellipse(linewidth = 0.6, level = 0.75, show.legend = FALSE) +
+      # ggplot2::stat_ellipse(linewidth = 0.6, level = 0.75, show.legend = FALSE) +
       ggplot2::scale_colour_manual(values = pal, name = "Component", drop = FALSE) +
       ggplot2::labs(
         title    = sprintf("Profile %d  (K=%d)", p, dat$settings$n_components[p]),
@@ -431,7 +431,7 @@
 # Returns a named list; PCA and mu entries are sub-lists of ggplots.
 .mp_build_all <- function(dat) {
   list(
-    heatmap                = .mp_plot_heatmap(dat),
+    # heatmap                = .mp_plot_heatmap(dat),
     feature_partitions     = .mp_plot_feature_parts(dat),
     observation_partitions = .mp_plot_obs_parts(dat),
     pca                    = .mp_plot_pca(dat),
@@ -444,7 +444,8 @@
 # Resolve `which` argument to a character vector of plot names
 .mp_resolve_which <- function(which_arg) {
   plot_names <- c(
-    "heatmap", "feature_partitions", "observation_partitions",
+    # "heatmap",
+    "feature_partitions", "observation_partitions",
     "pca", "proportions", "mahalanobis", "component_means"
   )
   if (identical(which_arg, "all")) return(plot_names)
@@ -452,7 +453,8 @@
     idx <- as.integer(which_arg)
     bad <- idx[idx < 1 | idx > length(plot_names)]
     if (length(bad))
-      stop("Plot indices out of range [1, 7]: ", paste(bad, collapse = ", "),
+      # stop("Plot indices out of range [1, 7]: ", paste(bad, collapse = ", "),
+      stop("Plot indices out of range [1, 6]: ", paste(bad, collapse = ", "),
            call. = FALSE)
     return(plot_names[idx])
   }
@@ -464,7 +466,8 @@
            call. = FALSE)
     return(which_arg)
   }
-  stop("`which` must be \"all\", an integer vector 1-7, or a character vector of plot names.",
+  # stop("`which` must be \"all\", an integer vector 1-7, or a character vector of plot names.",
+  stop("`which` must be \"all\", an integer vector 1-6, or a character vector of plot names.",
        call. = FALSE)
 }
 

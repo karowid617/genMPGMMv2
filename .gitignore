@@ -17,6 +17,9 @@ Rplots.pdf
 _pre_cleanup_snapshot/
 _archive_cleanup/
 
+# Local exploration scripts (not part of the package)
+scripts/
+
 # Documentation auto-built from vignettes (keep /doc local only)
 /doc/
 /Meta/
