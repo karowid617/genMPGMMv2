@@ -6,6 +6,9 @@ knitr::opts_chunk$set(
   fig.height = 4
 )
 
+## ----logo, echo=FALSE, out.width="160px", out.extra='style="float:right; padding:10px"'----
+knitr::include_graphics("../man/figures/logo.png")
+
 ## ----load---------------------------------------------------------------------
 library(genMPGMM)
 

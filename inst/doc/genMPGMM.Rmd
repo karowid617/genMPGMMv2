@@ -19,6 +19,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r logo, echo=FALSE, out.width="160px", out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("../man/figures/logo.png")
+```
+
 ## Motivation
 
 Benchmarking clustering and multi-omics integration methods requires
